@@ -3,7 +3,7 @@
 namespace App\Events\Modules\Test;
 
 use App\Events\Message;
-use Core\Modules\Test\Entities\Test;
+use Core\Modules\Consultation\ConsultNFe\UseCase;
 
 class TestEvent extends Message
 {
@@ -11,7 +11,7 @@ class TestEvent extends Message
     private const VERSION = 1;
     private const TYPE = 'test-event-name';
 
-    public function __construct(Test $entity)
+    public function __construct(UseCase $entity)
     {
         parent::__construct(
             self::SOURCE,
@@ -21,7 +21,7 @@ class TestEvent extends Message
         );
     }
 
-    private function data(Test $entity): array
+    private function data(UseCase $entity): array
     {
         return [
             'IntAttribute' => $entity->getIntAttribute(),

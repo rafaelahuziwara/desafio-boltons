@@ -15,5 +15,6 @@ Route::group(['prefix' => 'v1', 'middleware' => []], function () {
     /**
      * api/v1/test
      */
-    Route::get('/test', 'TestController@index')->name('test.index');
+    Route::get('/NFe/push', [\App\Http\Controllers\NFe\NFeController::class, 'pushNFes']);
+    Route::get('/NFe/get', [\App\Http\Controllers\NFe\NFeController::class, 'getTotalValueByAccessKey']);
 });

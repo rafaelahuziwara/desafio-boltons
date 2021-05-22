@@ -30,4 +30,9 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'sandbox' => [
+        'base_uri' => env('SANDBOX_BASE_URI'),
+        'x-api-key' => env('X_API_KEY'),
+        'x-api-id' => env('X_API_ID'),
+    ]
 ];

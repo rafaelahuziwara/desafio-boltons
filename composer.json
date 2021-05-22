@@ -1,7 +1,7 @@
 {
-    "name": "arquivei/laravel-skeleton-api",
+    "name": "arquivei/desafio-boltons",
     "type": "project",
-    "description": "The Arquivei Laravel Skeleton API.",
+    "description": "Desafio Boltons - Usando Arquivei Laravel Skeleton API.",
     "keywords": [
         "framework",
         "laravel",
@@ -11,12 +11,17 @@
     "license": "MIT",
     "require": {
         "php": "^7.4",
+        "ext-json": "*",
+        "ext-simplexml": "^7.4",
         "arquivei/events-sender": "^3.3",
-        "arquivei/log-adapter": "^0.0.1",
         "arquivei/laravel-health-checker": "^2.0",
+        "arquivei/log-adapter": "^0.0.1",
+        "fabpot/goutte": "^4.0",
         "fideloper/proxy": "^4.4",
+        "guzzlehttp/guzzle": "^7.3",
         "laravel/framework": "^7.0",
-        "laravel/tinker": "^2.4"
+        "laravel/tinker": "^2.4",
+        "spatie/data-transfer-object": "^2.8"
     },
     "require-dev": {
         "facade/ignition": "^2.0",
