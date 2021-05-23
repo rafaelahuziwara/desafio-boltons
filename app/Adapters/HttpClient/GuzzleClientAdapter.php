@@ -10,21 +10,13 @@ use Core\Modules\NFe\PushNFes\Gateways;
 
 class GuzzleClientAdapter implements Gateways\PushNFeGateway
 {
-    public function __construct()
-    {
-    }
-
     public function pushNFe(): array
     {
         $client = $this->createConnection();
         $nfeDTO = new NFeDTO();
-        try {
-            $response = $client->request('GET', '/v1/nfe/received');
-            return $nfeDTO->fromJson($response->getBody()->getContents());
-        } catch (GuzzleException $e) {
-            dump($e);
-            return [];
-        }
+        $response = $client->request('GET', '/v1/nfe/received');
+
+        return $nfeDTO->fromJson($response->getBody()->getContents());
     }
 
     private function createConnection(): Client

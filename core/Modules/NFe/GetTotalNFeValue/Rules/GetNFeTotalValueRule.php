@@ -2,6 +2,7 @@
 
 namespace Core\Modules\NFe\GetTotalNFeValue\Rules;
 
+use Core\Modules\NFe\GetTotalNFeValue\Exceptions\NFeNotFoundException;
 use Core\Modules\NFe\GetTotalNFeValue\Gateways\FindNFeValueGateway;
 
 class GetNFeTotalValueRule
@@ -15,6 +16,10 @@ class GetNFeTotalValueRule
 
     public function apply(string $accessKey): float
     {
-        return $this->findNFeValueGateway->get($accessKey);
+        try {
+            return $this->findNFeValueGateway->get($accessKey);
+        } catch (\Throwable $e) {
+            throw new NFeNotFoundException($e);
+        }
     }
 }

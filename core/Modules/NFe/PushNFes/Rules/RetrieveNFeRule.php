@@ -3,6 +3,7 @@
 
 namespace Core\Modules\NFe\PushNFes\Rules;
 
+use Core\Modules\NFe\PushNFes\Exceptions\NFeRetrievalException;
 use Core\Modules\NFe\PushNFes\Gateways\PushNFeGateway;
 
 class RetrieveNFeRule
@@ -16,6 +17,10 @@ class RetrieveNFeRule
 
     public function apply(): array
     {
-        return $this->pushNFeGateway->pushNFe();
+        try {
+            return $this->pushNFeGateway->pushNFe();
+        } catch (\Throwable $e) {
+            throw new NFeRetrievalException($e);
+        }
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\NFe;
 
 use App\Adapters\HttpClient\GuzzleClientAdapter;
+use App\Adapters\Log\MonologLogAdapter;
 use App\Adapters\Modules\NFe\FindNFeValuePgsqlAdapter;
 use App\Adapters\Modules\NFe\NFePgsqlAdapter;
 use App\Http\Controllers\BaseController;
@@ -13,9 +14,17 @@ use Illuminate\Http\JsonResponse;
 
 class NFeController extends BaseController
 {
+    protected MonologLogAdapter $logAdapter;
+
+    public function __construct(MonologLogAdapter $logAdapter)
+    {
+        $this->logAdapter = $logAdapter;
+    }
+
     public function pushNFes(): JsonResponse
     {
-        $useCase = new UseCase(new GuzzleClientAdapter(), new NFePgsqlAdapter());
+
+        $useCase = new UseCase($this->logAdapter, new GuzzleClientAdapter(), new NFePgsqlAdapter());
         try {
             $useCase->execute();
 
@@ -25,7 +34,13 @@ class NFeController extends BaseController
                 ]
             ]);
         } catch (\Exception $e) {
-            dump($e);
+            $this->logAdapter->critical(
+                'Something went wrong at pushNFes.',
+                [
+                    'exception' => $e
+                ]
+            );
+
             return new JsonResponse([
                 'data' => $e,
                 'status' => [
@@ -38,7 +53,7 @@ class NFeController extends BaseController
 
     public function getTotalValueByAccessKey(string $accessKey): JsonResponse
     {
-        $useCase = new \Core\Modules\NFe\GetTotalNFeValue\UseCase(new FindNFeValuePgsqlAdapter());
+        $useCase = new \Core\Modules\NFe\GetTotalNFeValue\UseCase($this->logAdapter, new FindNFeValuePgsqlAdapter());
 
         try {
             $response = $useCase->execute($accessKey);
@@ -48,10 +63,19 @@ class NFeController extends BaseController
                     'code' => 200
                 ],
                 'access_key' => $accessKey,
-                'total_nfe_value' => $response,
+                'total_nfe_value' => $response
             ]);
         } catch (\Exception $e) {
-            dump($e);
+            $this->logAdapter->critical(
+                'Something went wrong at getTotalValueByAccessKey.',
+                [
+                    'exception' => $e,
+                    'client' => [
+                        'access_key' => $accessKey
+                    ]
+                ]
+            );
+
             return new JsonResponse([
                 'status' => [
                     'code' => $e->getCode(),

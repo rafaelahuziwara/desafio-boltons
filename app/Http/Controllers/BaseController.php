@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Arquivei\LogAdapter\Log;
+use Core\Dependencies\LogInterface;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -14,9 +14,9 @@ class BaseController extends Controller
     use DispatchesJobs;
     use ValidatesRequests;
 
-    protected Log $logger;
+    protected LogInterface $logger;
 
-    public function __construct(Log $logger)
+    public function __construct(LogInterface $logger)
     {
         $this->logger = $logger;
     }

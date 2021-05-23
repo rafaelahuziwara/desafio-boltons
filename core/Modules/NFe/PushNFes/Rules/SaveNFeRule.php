@@ -2,6 +2,7 @@
 
 namespace Core\Modules\NFe\PushNFes\Rules;
 
+use Core\Modules\NFe\PushNFes\Exceptions\NFeSaveException;
 use Core\Modules\NFe\PushNFes\Gateways\SaveNFeGateway;
 
 final class SaveNFeRule
@@ -15,6 +16,10 @@ final class SaveNFeRule
 
     public function apply(array $nFes): void
     {
-        $this->saveNFeGateway->saveAll($nFes);
+        try {
+            $this->saveNFeGateway->saveAll($nFes);
+        } catch (\Throwable $e) {
+            throw new NFeSaveException($e);
+        }
     }
 }
