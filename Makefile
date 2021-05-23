@@ -89,15 +89,21 @@ composer:
 	docker run -it --rm \
 		--entrypoint /bin/sh \
 		-e COMPOSER_AUTH=${COMPOSER_AUTH} \
+		-e COMPOSER_MEMORY_LIMIT=-1 \
 		--volume ${PWD}:/application \
 		--workdir /application \
-		${APP_IDENTIFIER}_php-fpm
+		composer
 
 composer-install:
 	docker run -it --rm \
 		--entrypoint composer \
+		-e COMPOSER_MEMORY_LIMIT=-1 \
 		-e COMPOSER_AUTH=${COMPOSER_AUTH} \
 		--volume ${PWD}:/application \
 		--workdir /application \
-		${APP_IDENTIFIER}_php-fpm \
+		composer \
 		install --ignore-platform-reqs
+
+.PHONY: database
+database:
+	@docker-compose exec database psql -U desafio-boltons

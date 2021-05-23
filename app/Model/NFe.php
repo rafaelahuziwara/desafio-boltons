@@ -6,11 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class NFe extends Model
 {
-    protected $tableName = 'nfe';
+    protected $table = 'nfe';
 
-    protected $columnsNames = [
-        'nfe_id',
+    protected $fillable = [
         'access_key',
-        'total_nfe_value'
+        'total_nfe_value',
     ];
 }

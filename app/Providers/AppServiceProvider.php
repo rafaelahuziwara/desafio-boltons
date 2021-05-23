@@ -2,9 +2,14 @@
 
 namespace App\Providers;
 
-use App\Adapters\Monolog\MonologLogAdapter;
-use App\Adapters\Monolog\SettableTraceIdLogger;
+use App\Adapters\EventSenderAdapter;
+use App\Factories\KafkaFactory;
+use Arquivei\Events\Sender\Sender;
+use Arquivei\LogAdapter\Log;
+use Core\Dependencies\EventSenderInterface;
+use Core\Dependencies\LogInterface;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,15 +20,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(\Goutte\Client::class, function ($app) {
-            $client = new \Goutte\Client();
-            $client->setClient(new \GuzzleHttp\Client([
-                'timeout' => 20,
-                'allow_redirects' => false,
-            ]));
+        $this->app->singleton(LogInterface::class, Log::class);
 
-            return $client;
-        });
+        $this->app->bind(
+            EventSenderInterface::class,
+            fn () => new EventSenderAdapter(new Sender(KafkaFactory::create()))
+        );
     }
 
     /**
@@ -33,6 +35,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Schema::defaultStringLength(255);
     }
 }

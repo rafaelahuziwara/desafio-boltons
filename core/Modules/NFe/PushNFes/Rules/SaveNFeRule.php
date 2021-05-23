@@ -13,8 +13,8 @@ final class SaveNFeRule
         $this->saveNFeGateway = $saveNFeGateway;
     }
 
-    public function apply(array $nfes): void
+    public function apply(array $nFes): void
     {
-        $this->saveNFeGateway->save($nfes);
+        $this->saveNFeGateway->saveAll($nFes);
     }
 }

@@ -22,7 +22,8 @@ class GuzzleClientAdapter implements Gateways\PushNFeGateway
             $response = $client->request('GET', '/v1/nfe/received');
             return $nfeDTO->fromJson($response->getBody()->getContents());
         } catch (GuzzleException $e) {
-            throw new ConnectException($e->getMessage(), $e->getCode(), $e);
+            dump($e);
+            return [];
         }
     }
 
@@ -36,7 +37,7 @@ class GuzzleClientAdapter implements Gateways\PushNFeGateway
                 'Content-Type' => 'application/json',
             ],
             'query' => [
-                'limit' => '1'
+                'limit' => '3'
             ]
         ]);
     }
