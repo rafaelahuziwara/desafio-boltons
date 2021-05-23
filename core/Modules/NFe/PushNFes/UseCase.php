@@ -18,15 +18,11 @@ class UseCase
         $this->saveNFeRule = new SaveNFeRule($saveNFeGateway);
     }
 
-    public function execute(): array
+    public function execute(): void
     {
         try {
             $nFes = $this->retrieveNFeRule->apply();
             $this->saveNFeRule->apply($nFes);
-
-            if (!empty($nFes)) {
-                return $nFes;
-            }
         } catch (Throwable $exception) {
             throw $exception;
         }
